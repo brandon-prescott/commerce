@@ -12,8 +12,9 @@ from .models import User, Category, Listing
 class CreateListingForm(forms.ModelForm):
     # Creates form for Listing model
     class Meta:
-        model = Listing
-        fields = ["title", "description", "image_url", "price", "category"]
+        model = Listing # Creates the link to the Listing SQL table
+        fields = ["title", "description", "image_url", "price", "category"] # Fields is essentially saying which attributes to pull in from the model/SQL table
+        # Labels define what goes in the label tag on the form
         labels = {
             "title": "Title",
             "description": "Description",
@@ -21,6 +22,7 @@ class CreateListingForm(forms.ModelForm):
             "price": "Price",
             "category": "Category"
         }
+        # Widgets is for formatting the form
         widgets = {
             "title": forms.TextInput(attrs={
             "placeholder": "Enter a title for this item",
