@@ -65,3 +65,4 @@ class BidForm(forms.ModelForm):
             "class": "form-control"
             })
         }
+            

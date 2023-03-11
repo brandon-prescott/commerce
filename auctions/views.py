@@ -88,7 +88,26 @@ def create_listing(request):
 
 def listing(request, listing_id):
     if request.method == "POST":
-        return redirect(index)
+        form_data = request.POST.copy()
+        form_data["user"] = request.user.id
+        form_data["listing"] = int(listing_id)
+        
+        listing = Listing.objects.get(id=int(listing_id))
+        current_price = listing.price
+        print(form_data["amount"])
+
+        if float(form_data["amount"]) <= current_price:
+            owner = User.objects.get(id=listing.user.id)
+            return render(request, "auctions/listing.html", {
+                "listing": listing,
+                "form": BidForm,
+                "owner_username": owner.username,
+                "category": listing.category,
+                "bid_error": 1 
+            })
+        else:
+            # TO DO: Add bid to datbase and overwrite current bid on listing
+            return redirect(index)
     else:
         listing = Listing.objects.get(id=int(listing_id))
         owner = User.objects.get(id=listing.user.id)
@@ -96,5 +115,14 @@ def listing(request, listing_id):
             "listing": listing,
             "form": BidForm,
             "owner_username": owner.username,
-            "category": listing.category
+            "category": listing.category,
+            "bid_error": 0
         })
+    
+
+def categories(request):
+    return redirect(index)
+
+
+def watchlist(request):
+    return redirect(index)

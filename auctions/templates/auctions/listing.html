@@ -13,14 +13,22 @@
         Current Price: ${{ listing.price }}
     </div>
     <div>
-        <form action="listing/{{ listing.id }}" method="POST">
-            <div class="form-group">
-                {{ form.amount }}
-            </div>
-            <button type="submit" class="btn btn-primary">Place Bid</button>
-            {{ form.user.as_hidden }}
-            {{ form.listing.as_hidden }}
-        </form>
+        {% if user.is_authenticated %}
+            <form action="{{ listing.id }}" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ form.amount }}
+                </div>
+                {% if bid_error == 1 %}
+                    <div class="alert alert-warning" role="alert">
+                        Value must exceed the current price.
+                    </div>
+                {% endif %}    
+                <button type="submit" class="btn btn-primary">Place Bid</button>
+                {{ form.user.as_hidden }}
+                {{ form.listing.as_hidden }}
+            </form>
+        {% endif %}
     </div>
     <div>
         <h3>Details</h3>
