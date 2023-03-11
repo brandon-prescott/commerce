@@ -3,5 +3,22 @@
 {% block body %}
     <h2>Active Listings</h2>
 
-    TODO
+    
+    {% for listing in all_listings %}
+        <div class="border rounded">
+            <div>
+                <img src="{{ listing.image_url }}" onerror="this.onerror=null;this.src='https://www.survivorsuk.org/wp-content/uploads/2017/01/no-image.jpg';" width="400px" height="auto">
+            </div>
+            <div>
+                Title: {{ listing.title }}
+            </div>
+            <div>
+                Current Price: {{ listing.price }}
+            </div>
+            <div>
+                Created: {{ listing.time }}
+            </div>
+        </div>
+    {% endfor %}
+    
 {% endblock %}
