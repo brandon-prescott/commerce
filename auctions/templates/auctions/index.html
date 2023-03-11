@@ -2,9 +2,9 @@
 
 {% block body %}
     <h2>Active Listings</h2>
-
-    
+  
     {% for listing in all_listings %}
+    <a href="listing/{{ listing.id }}">
         <div class="border rounded">
             <div>
                 <img src="{{ listing.image_url }}" onerror="this.onerror=null;this.src='https://www.survivorsuk.org/wp-content/uploads/2017/01/no-image.jpg';" width="400px" height="auto">
@@ -13,12 +13,17 @@
                 Title: {{ listing.title }}
             </div>
             <div>
-                Current Price: {{ listing.price }}
+                Current Price: ${{ listing.price }}
             </div>
             <div>
                 Created: {{ listing.time }}
             </div>
+            <div>
+                Listing ID: {{ listing.id }} (DELETE WHEN FINISHED)
+            </div>
         </div>
+    </a>
+        
     {% endfor %}
     
 {% endblock %}

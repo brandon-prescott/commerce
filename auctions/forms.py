@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import User, Category, Listing
+from .models import User, Category, Listing, Bid
 
 
 class CreateListingForm(forms.ModelForm):
@@ -42,5 +42,26 @@ class CreateListingForm(forms.ModelForm):
             }),
             "user": forms.NumberInput(attrs={
             "placeholder": 0
+            })
+        }
+
+
+class BidForm(forms.ModelForm):
+    # Creates form for submitting bids
+    class Meta:
+        model = Bid
+        fields = ["user", "listing", "amount"]
+        widgets = {
+            "user": forms.NumberInput(attrs={
+            "placeholder": 0
+            }),
+            "listing": forms.NumberInput(attrs={
+            "placeholder": 0
+            }),
+            "amount": forms.NumberInput(attrs={
+            "placeholder": "Bid",
+            "min": 0.01,
+            "max": 1000000000,
+            "class": "form-control"
             })
         }

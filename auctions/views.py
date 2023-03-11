@@ -7,7 +7,7 @@ from django.urls import reverse
 from django import forms
 
 from .models import User, Category, Listing
-from .forms import CreateListingForm
+from .forms import CreateListingForm, BidForm
 
 
 def index(request):
@@ -83,4 +83,18 @@ def create_listing(request):
     else:
         return render(request, "auctions/create.html", {
             "form": CreateListingForm
+        })
+
+
+def listing(request, listing_id):
+    if request.method == "POST":
+        return redirect(index)
+    else:
+        listing = Listing.objects.get(id=int(listing_id))
+        owner = User.objects.get(id=listing.user.id)
+        return render(request, "auctions/listing.html", {
+            "listing": listing,
+            "form": BidForm,
+            "owner_username": owner.username,
+            "category": listing.category
         })

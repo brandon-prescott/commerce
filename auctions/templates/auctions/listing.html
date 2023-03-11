@@ -1,0 +1,35 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Listing: {{ listing.title }}</h2>
+  
+    <div>
+        <img src="{{ listing.image_url }}" onerror="this.onerror=null;this.src='https://www.survivorsuk.org/wp-content/uploads/2017/01/no-image.jpg';" width="400px" height="auto">
+    </div>
+    <div>
+        {{ listing.description }}
+    </div>
+    <div>
+        Current Price: ${{ listing.price }}
+    </div>
+    <div>
+        <form action="listing/{{ listing.id }}" method="POST">
+            <div class="form-group">
+                {{ form.amount }}
+            </div>
+            <button type="submit" class="btn btn-primary">Place Bid</button>
+            {{ form.user.as_hidden }}
+            {{ form.listing.as_hidden }}
+        </form>
+    </div>
+    <div>
+        <h3>Details</h3>
+    </div>
+    <div>
+        <ul>
+            <li>Listed by: {{ owner_username }}</li>
+            <li>Category: {{ category }}</li>
+        </ul>
+    </div>
+    
+{% endblock %}
