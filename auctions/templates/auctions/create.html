@@ -26,6 +26,11 @@
             {{ form.category }}
         </div>
         <button type="submit" class="btn btn-primary">Create Listing</button>
+        <!-- Hidden user id field is there as a placeholder, the actual user id is added on the backend in the views.py file -->
+        <div class="form-group">
+            <label for="user">{{ form.user.label.as_hidden }}</label>
+            {{ form.user.as_hidden }}
+        </div>
     </form>
 
 {% endblock %}

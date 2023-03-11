@@ -2,50 +2,13 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from django import forms
 
 from .models import User, Category, Listing
+from .forms import CreateListingForm
 
-
-class CreateListingForm(forms.ModelForm):
-    # Creates form for Listing model
-    class Meta:
-        model = Listing # Creates the link to the Listing SQL table
-        fields = ["title", "description", "image_url", "price", "category"] # Fields is essentially saying which attributes to pull in from the model/SQL table
-        # Labels define what goes in the label tag on the form
-        labels = {
-            "title": "Title",
-            "description": "Description",
-            "image_url": "Image URL",
-            "price": "Price",
-            "category": "Category"
-        }
-        # Widgets is for formatting the form
-        widgets = {
-            "title": forms.TextInput(attrs={
-            "placeholder": "Enter a title for this item",
-            "class": "form-control"
-            }),
-            "description": forms.Textarea(attrs={
-            "placeholder": "Describe this item in more detail",
-            "class": "form-control"
-            }),
-            "image_url": forms.URLInput(attrs={
-            "placeholder": "A URL can be used to display an image",
-            "class": "form-control"
-            }),
-            "price": forms.NumberInput(attrs={
-            "placeholder": "Enter a starting bid",
-            "min": 0.01,
-            "max": 1000000000,
-            "class": "form-control"
-            }),
-            "category": forms.Select(attrs={
-            "class": "form-control"
-            })
-        }
 
 def index(request):
     return render(request, "auctions/index.html")
@@ -106,8 +69,14 @@ def register(request):
 @login_required(login_url="login")
 def create_listing(request):
     if request.method == "POST":
-        return render(request, "auctions/index.html")
-
+        # Create a copy of the POST request to make it mutable
+        # This was done so the user id can be added inside this view
+        form_data = request.POST.copy()
+        form_data["user"] = request.user.id
+        form = CreateListingForm(form_data)
+        if form.is_valid():
+            form.save()
+        return redirect(index)
     else:
         return render(request, "auctions/create.html", {
             "form": CreateListingForm
