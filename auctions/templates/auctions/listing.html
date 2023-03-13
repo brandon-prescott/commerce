@@ -14,19 +14,13 @@
     </div>
     <div>
         {% if user.is_authenticated %}
-            <form action="{{ listing.id }}" method="POST">
+            <form action="{% url 'bid' %}" method="POST">
                 {% csrf_token %}
                 <div class="form-group">
                     {{ form.amount }}
-                </div>
-                {% if bid_error == 1 %}
-                    <div class="alert alert-warning" role="alert">
-                        Value must exceed the current price.
-                    </div>
-                {% endif %}    
+                </div>  
                 <button type="submit" class="btn btn-primary">Place Bid</button>
-                {{ form.user.as_hidden }}
-                {{ form.listing.as_hidden }}
+                <input type="hidden" name="listing_id" value="{{ listing.id }}">
             </form>
         {% endif %}
     </div>
@@ -35,7 +29,7 @@
     </div>
     <div>
         <ul>
-            <li>Listed by: {{ owner_username }}</li>
+            <li>Listed by: {{ seller_username }}</li>
             <li>Category: {{ category }}</li>
         </ul>
     </div>

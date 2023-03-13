@@ -7,15 +7,14 @@ class CreateListingForm(forms.ModelForm):
     # Creates form for Listing model
     class Meta:
         model = Listing # Creates the link to the Listing SQL table
-        fields = ["title", "description", "image_url", "price", "category", "user"] # Fields is essentially saying which attributes to pull in from the model/SQL table
+        fields = ["title", "description", "image_url", "price", "category"] # Fields is essentially saying which attributes to pull in from the model/SQL table
         # Labels define what goes in the label tag on the form
         labels = {
             "title": "Title",
             "description": "Description",
             "image_url": "Image URL",
             "price": "Price",
-            "category": "Category",
-            "user": "User"
+            "category": "Category"
         }
         # Widgets is for formatting the form
         widgets = {
@@ -32,16 +31,13 @@ class CreateListingForm(forms.ModelForm):
             "class": "form-control"
             }),
             "price": forms.NumberInput(attrs={
-            "placeholder": "Enter a starting bid",
+            "placeholder": "Enter a starting price",
             "min": 0.01,
             "max": 1000000000,
             "class": "form-control"
             }),
             "category": forms.Select(attrs={
             "class": "form-control"
-            }),
-            "user": forms.NumberInput(attrs={
-            "placeholder": 0
             })
         }
 
@@ -50,14 +46,8 @@ class BidForm(forms.ModelForm):
     # Creates form for submitting bids
     class Meta:
         model = Bid
-        fields = ["user", "listing", "amount"]
+        fields = ["amount"]
         widgets = {
-            "user": forms.NumberInput(attrs={
-            "placeholder": 0
-            }),
-            "listing": forms.NumberInput(attrs={
-            "placeholder": 0
-            }),
             "amount": forms.NumberInput(attrs={
             "placeholder": "Bid",
             "min": 0.01,
@@ -65,4 +55,11 @@ class BidForm(forms.ModelForm):
             "class": "form-control"
             })
         }
+
+
+
+
+    
+
+
             

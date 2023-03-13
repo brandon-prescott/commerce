@@ -4,7 +4,7 @@
     <h2>Active Listings</h2>
   
     {% for listing in all_listings %}
-    <a href="listing/{{ listing.id }}">
+    <a href="{% url 'listing' listing_id=listing.id %}">
         <div class="border rounded">
             <div>
                 <img src="{{ listing.image_url }}" onerror="this.onerror=null;this.src='https://www.survivorsuk.org/wp-content/uploads/2017/01/no-image.jpg';" width="400px" height="auto">

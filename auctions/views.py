@@ -72,14 +72,26 @@ def register(request):
 @login_required(login_url="login")
 def create_listing(request):
     if request.method == "POST":
-        # Create a copy of the POST request to make it mutable
-        # This was done so the user id can be added inside this view
-        form_data = request.POST.copy()
-        form_data["user"] = request.user.id
-        form = CreateListingForm(form_data)
+        form = CreateListingForm(request.POST)
         if form.is_valid():
-            form.save()
-        return redirect(index)
+            # Get data from form
+            title = form.cleaned_data["title"]
+            description = form.cleaned_data["description"]
+            image_url = form.cleaned_data["image_url"]
+            price = form.cleaned_data["price"]
+            category = form.cleaned_data["category"]
+
+            # Save to database
+            new_listing = Listing(
+                user = User.objects.get(id=request.user.id),
+                title = title,
+                description = description,
+                image_url = image_url,
+                price = price,
+                category = category
+            )
+            new_listing.save()
+            return redirect(index)
     else:
         return render(request, "auctions/create.html", {
             "form": CreateListingForm
@@ -88,41 +100,33 @@ def create_listing(request):
 
 def listing(request, listing_id):
     if request.method == "POST":
-        form_data = request.POST.copy()
-        form_data["user"] = request.user.id
-        form_data["listing"] = int(listing_id)
-        
-        listing = Listing.objects.get(id=int(listing_id))
-        current_price = listing.price
-        print(form_data["amount"])
-
-        if float(form_data["amount"]) <= current_price:
-            owner = User.objects.get(id=listing.user.id)
-            return render(request, "auctions/listing.html", {
-                "listing": listing,
-                "form": BidForm,
-                "owner_username": owner.username,
-                "category": listing.category,
-                "bid_error": 1 
-            })
-        else:
-            # TO DO: Add bid to datbase and overwrite current bid on listing
-            return redirect(index)
+        # TO DO
+        return redirect(index)
     else:
         listing = Listing.objects.get(id=int(listing_id))
-        owner = User.objects.get(id=listing.user.id)
+        seller = User.objects.get(id=listing.user.id)
         return render(request, "auctions/listing.html", {
             "listing": listing,
             "form": BidForm,
-            "owner_username": owner.username,
+            "seller_username": seller.username,
             "category": listing.category,
-            "bid_error": 0
         })
     
+@login_required(login_url="auctions:login")
+def bid(request):
+    if request.method == "POST":
+        # TO DO
+        return redirect(index)
+    else:
+        # TO DO
+        return redirect(index)
+
 
 def categories(request):
+    # TO DO
     return redirect(index)
 
 
 def watchlist(request):
+    # TO DO
     return redirect(index)
