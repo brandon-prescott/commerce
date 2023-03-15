@@ -6,12 +6,12 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django import forms
 
-from .models import User, Category, Listing
+from .models import User, Category, Listing, Bid
 from .forms import CreateListingForm, BidForm
 
 
 def index(request):
-    all_listings = Listing.objects.all()
+    all_listings = Listing.objects.all().order_by("-time")
     return render(request, "auctions/index.html", {
         "all_listings": all_listings
     })
@@ -74,21 +74,14 @@ def create_listing(request):
     if request.method == "POST":
         form = CreateListingForm(request.POST)
         if form.is_valid():
-            # Get data from form
-            title = form.cleaned_data["title"]
-            description = form.cleaned_data["description"]
-            image_url = form.cleaned_data["image_url"]
-            price = form.cleaned_data["price"]
-            category = form.cleaned_data["category"]
-
-            # Save to database
+            # Save form data to database
             new_listing = Listing(
                 user = User.objects.get(id=request.user.id),
-                title = title,
-                description = description,
-                image_url = image_url,
-                price = price,
-                category = category
+                title = form.cleaned_data["title"],
+                description = form.cleaned_data["description"],
+                image_url = form.cleaned_data["image_url"],
+                price = form.cleaned_data["price"],
+                category = form.cleaned_data["category"]
             )
             new_listing.save()
             return redirect(index)
@@ -115,10 +108,45 @@ def listing(request, listing_id):
 @login_required(login_url="auctions:login")
 def bid(request):
     if request.method == "POST":
-        # TO DO
-        return redirect(index)
+        form = BidForm(request.POST)
+        if form.is_valid():
+            # Get data
+            amount = form.cleaned_data["amount"]
+            listing_id = int(request.POST["listing_id"])
+            listing = Listing.objects.get(id=int(listing_id))
+            current_price = listing.price
+
+            # Validate data
+            if amount <= current_price:
+                return render(request, "auctions/error.html", {
+                    "message": "Bid must exceed the current listing price",
+                    "code": "400"
+                })
+            
+            seller = User.objects.get(id=listing.user.id)
+            seller_id = seller.id
+            user_id = request.user.id
+
+            if user_id == seller_id:
+                return render(request, "auctions/error.html", {
+                    "message": "Seller cannot bid on their own item",
+                    "code": "400"
+                })
+            
+            # Create new bid entry in database
+            new_bid = Bid(
+                user = User.objects.get(id=request.user.id),
+                listing = listing,
+                amount = amount
+            )
+            new_bid.save()
+
+            # Update current price in database
+            listing.price = amount
+            listing.save()
+
+        return redirect(f"/listing/{listing_id}")
     else:
-        # TO DO
         return redirect(index)
 
 
