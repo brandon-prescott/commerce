@@ -13,6 +13,7 @@ from .forms import CreateListingForm, BidForm
 def index(request):
     all_listings = Listing.objects.all().order_by("-time")
     return render(request, "auctions/index.html", {
+        "category": "",
         "all_listings": all_listings
     })
 
@@ -150,9 +151,30 @@ def bid(request):
         return redirect(index)
 
 
-def categories(request):
-    # TO DO
-    return redirect(index)
+def categories(request, category_arg):
+    all_categories = Category.objects.all().order_by("category_name")
+
+    if category_arg == "all":
+        return render(request, "auctions/categories.html", {
+            "all_categories": all_categories
+        })
+    
+    list_categories_by_id = []
+    for category in all_categories:
+        list_categories_by_id.append(category.id)
+
+    if int(category_arg) not in list_categories_by_id:
+        return render(request, "auctions/error.html", {
+            "message": "Category does not exist",
+            "code": "404"
+        })
+    
+    category_listings = Listing.objects.filter(category=int(category_arg))
+    category_name = Category.objects.get(id=int(category_arg))
+    return render(request, "auctions/index.html", {
+        "category": f": {category_name}",
+        "all_listings": category_listings
+    })
 
 
 def watchlist(request):
