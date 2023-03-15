@@ -151,6 +151,7 @@ def bid(request):
         return redirect(index)
 
 
+# known bug: trying to type in a url path with a string in causes a value conversion error with the int funciton - Potentially use a Try Exception case to handle
 def categories(request, category_arg):
     all_categories = Category.objects.all().order_by("category_name")
 
