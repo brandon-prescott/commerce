@@ -6,14 +6,14 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django import forms
 
-from .models import User, Category, Listing, Bid
+from .models import User, Category, Listing, Bid, Watchlist
 from .forms import CreateListingForm, BidForm
 
 
 def index(request):
     all_listings = Listing.objects.all().order_by("-time")
     return render(request, "auctions/index.html", {
-        "category": "",
+        "heading": "Active Listings",
         "all_listings": all_listings
     })
 
@@ -173,11 +173,21 @@ def categories(request, category_arg):
     category_listings = Listing.objects.filter(category=int(category_arg))
     category_name = Category.objects.get(id=int(category_arg))
     return render(request, "auctions/index.html", {
-        "category": f": {category_name}",
+        "heading": f"Active Listings: {category_name}",
         "all_listings": category_listings
     })
 
 
+@login_required(login_url="auctions:login")
 def watchlist(request):
-    # TO DO
-    return redirect(index)
+    user_id = request.user.id
+    watchlist = Watchlist.objects.filter(user=user_id).order_by("-time")
+
+    watchlist_listings = []
+    for item in watchlist:
+        watchlist_listings.append(item.listing)
+
+    return render(request, "auctions/index.html", {
+        "heading": "Watchlist",
+        "all_listings": watchlist_listings
+    })

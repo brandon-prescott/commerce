@@ -46,6 +46,7 @@ class Comment(models.Model):
 class Watchlist(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="watchlist_user") # One user can have many 'watches'
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE, blank=True, null=True, related_name="watchlist_listing") # One listing can be watched many times
+    time = models.DateTimeField(auto_now_add=True) # Auto timestamp
 
     def __str__(self):
         return f"{str(self.user)}_{str(self.listing)}"
