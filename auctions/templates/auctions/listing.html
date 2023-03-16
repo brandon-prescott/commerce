@@ -2,7 +2,17 @@
 
 {% block body %}
     <h2>Listing: {{ listing.title }}</h2>
-  
+
+    {% if user.is_authenticated %}
+        <div>
+            <form action="{% url 'watchlist' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="listing_id" value="{{ listing.id }}">
+                <input type="hidden" name="watchlist_action" value="remove">
+                <button type="submit">Watchlist</button>
+            </form>
+        </div>
+    {% endif %}
     <div>
         <img src="{{ listing.image_url }}" onerror="this.onerror=null;this.src='https://www.survivorsuk.org/wp-content/uploads/2017/01/no-image.jpg';" width="400px" height="auto">
     </div>

@@ -180,14 +180,40 @@ def categories(request, category_arg):
 
 @login_required(login_url="auctions:login")
 def watchlist(request):
-    user_id = request.user.id
-    watchlist = Watchlist.objects.filter(user=user_id).order_by("-time")
 
-    watchlist_listings = []
-    for item in watchlist:
-        watchlist_listings.append(item.listing)
+    if request.method == "POST":
+        listing_id = request.POST["listing_id"]
+        watchlist_action = request.POST["watchlist_action"]
 
-    return render(request, "auctions/index.html", {
-        "heading": "Watchlist",
-        "all_listings": watchlist_listings
-    })
+        if watchlist_action not in ["add", "remove"]:
+            return render(request, "auctions/error.html", {
+            "message": "Bad request",
+            "code": "404"
+        })
+
+        if watchlist_action == "add":
+            new_watchlist = Watchlist(
+                user = User.objects.get(id=request.user.id),
+                listing = Listing.objects.get(id=listing_id),
+            )
+            new_watchlist.save()
+            return redirect(listing, listing_id=listing_id)
+        
+        if watchlist_action == "remove":
+            user_id = request.user.id
+            filter = {"user": user_id, "listing": listing_id}
+            Watchlist.objects.filter(**filter).delete()
+            return redirect(listing, listing_id=listing_id)
+
+    else:
+        user_id = request.user.id
+        watchlist = Watchlist.objects.filter(user=user_id).order_by("-time")
+
+        watchlist_listings = []
+        for item in watchlist:
+            watchlist_listings.append(item.listing)
+
+        return render(request, "auctions/index.html", {
+            "heading": "Watchlist",
+            "all_listings": watchlist_listings
+        })
