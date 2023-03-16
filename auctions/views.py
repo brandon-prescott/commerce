@@ -93,19 +93,24 @@ def create_listing(request):
 
 
 def listing(request, listing_id):
-    if request.method == "POST":
-        # TO DO
-        return redirect(index)
+    user_id = request.user.id
+    filter = {"user": user_id, "listing": listing_id}
+
+    if len(Watchlist.objects.filter(**filter)) == 1:
+        in_watchlist = True
     else:
-        listing = Listing.objects.get(id=int(listing_id))
-        seller = User.objects.get(id=listing.user.id)
-        return render(request, "auctions/listing.html", {
-            "listing": listing,
-            "form": BidForm,
-            "seller_username": seller.username,
-            "category": listing.category,
-        })
+        in_watchlist = False
     
+    listing = Listing.objects.get(id=int(listing_id))
+    seller = User.objects.get(id=listing.user.id)
+    return render(request, "auctions/listing.html", {
+        "listing": listing,
+        "in_watchlist": in_watchlist,
+        "form": BidForm,
+        "seller_username": seller.username,
+        "category": listing.category,
+    })
+
 @login_required(login_url="auctions:login")
 def bid(request):
     if request.method == "POST":

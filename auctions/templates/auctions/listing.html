@@ -8,8 +8,14 @@
             <form action="{% url 'watchlist' %}" method="POST">
                 {% csrf_token %}
                 <input type="hidden" name="listing_id" value="{{ listing.id }}">
-                <input type="hidden" name="watchlist_action" value="remove">
-                <button type="submit">Watchlist</button>
+                {% if in_watchlist == True %}
+                    <input type="hidden" name="watchlist_action" value="remove">
+                    <button type="submit">Remove from Watchlist</button>
+                {% else %}
+                    <input type="hidden" name="watchlist_action" value="add">
+                    <button type="submit">Add to Watchlist</button>
+                {% endif %}
+
             </form>
         </div>
     {% endif %}
