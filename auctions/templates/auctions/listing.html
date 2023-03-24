@@ -2,8 +2,13 @@
 
 {% block body %}
     <h2>Listing: {{ listing.title }}</h2>
+    {% if listing.is_active == False %}
+        <div class="alert alert-danger" role="alert">
+            This auction is now closed
+        </div>
+    {% endif %}
 
-    {% if user.is_authenticated %}
+    {% if user.is_authenticated and listing.is_active == True %}
         <div>
             <form action="{% url 'watchlist' %}" method="POST">
                 {% csrf_token %}
@@ -29,7 +34,7 @@
         Current Price: ${{ listing.price }}
     </div>
     <div>
-        {% if user.is_authenticated %}
+        {% if user.is_authenticated and listing.is_active == True %}
             <form action="{% url 'bid' %}" method="POST">
                 {% csrf_token %}
                 <div class="form-group">
@@ -53,7 +58,7 @@
         <h3>Comments</h3>
     </div>
     <div>
-        {% if user.is_authenticated %}
+        {% if user.is_authenticated and listing.is_active == True %}
             <form action="{% url 'comment' %}" method="POST">
                 {% csrf_token %}
                 <div class="form-group">
