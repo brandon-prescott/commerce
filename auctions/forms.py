@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import User, Category, Listing, Bid
+from .models import User, Category, Listing, Bid, Comment
 
 
 class CreateListingForm(forms.ModelForm):
@@ -56,6 +56,18 @@ class BidForm(forms.ModelForm):
             })
         }
 
+
+class CommentForm(forms.ModelForm):
+    # Creates form for submitting comments
+    class Meta:
+        model = Comment
+        fields = ["comment"]
+        widgets = {
+            "comment": forms.TextInput(attrs={
+            "placeholder": "Add a comment",
+            "class": "form-control"
+            })
+        }
 
 
 

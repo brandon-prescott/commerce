@@ -33,7 +33,7 @@
             <form action="{% url 'bid' %}" method="POST">
                 {% csrf_token %}
                 <div class="form-group">
-                    {{ form.amount }}
+                    {{ bid_form.amount }}
                 </div>  
                 <button type="submit" class="btn btn-primary">Place Bid</button>
                 <input type="hidden" name="listing_id" value="{{ listing.id }}">
@@ -47,6 +47,29 @@
         <ul>
             <li>Listed by: {{ seller_username }}</li>
             <li>Category: {{ category }}</li>
+        </ul>
+    </div>
+    <div>
+        <h3>Comments</h3>
+    </div>
+    <div>
+        {% if user.is_authenticated %}
+            <form action="{% url 'comment' %}" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ comment_form.comment }}
+                </div>  
+                <button type="submit" class="btn btn-secondary">Add Comment</button>
+                <input type="hidden" name="listing_id" value="{{ listing.id }}">
+            </form>
+        {% endif %}
+    </div>
+    <hr>
+    <div>
+        <ul>
+            {% for comment in comments %}
+                <li>{{ comment.user }}: {{ comment.comment }} ({{ comment.time }})</li>
+            {% endfor %}
         </ul>
     </div>
     

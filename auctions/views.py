@@ -6,8 +6,8 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django import forms
 
-from .models import User, Category, Listing, Bid, Watchlist
-from .forms import CreateListingForm, BidForm
+from .models import User, Category, Listing, Bid, Watchlist, Comment
+from .forms import CreateListingForm, BidForm, CommentForm
 
 
 def index(request):
@@ -101,14 +101,17 @@ def listing(request, listing_id):
     else:
         in_watchlist = False
     
-    listing = Listing.objects.get(id=int(listing_id))
-    seller = User.objects.get(id=listing.user.id)
+    current_listing = Listing.objects.get(id=int(listing_id))
+    seller = User.objects.get(id=current_listing.user.id)
+    comments = Comment.objects.filter(listing=current_listing.id).order_by("-time")
     return render(request, "auctions/listing.html", {
-        "listing": listing,
+        "listing": current_listing,
         "in_watchlist": in_watchlist,
-        "form": BidForm,
+        "bid_form": BidForm,
+        "comment_form": CommentForm,
         "seller_username": seller.username,
-        "category": listing.category,
+        "category": current_listing.category,
+        "comments": comments
     })
 
 @login_required(login_url="auctions:login")
@@ -193,7 +196,7 @@ def watchlist(request):
         if watchlist_action not in ["add", "remove"]:
             return render(request, "auctions/error.html", {
             "message": "Bad request",
-            "code": "404"
+            "code": "400"
         })
 
         if watchlist_action == "add":
@@ -222,3 +225,27 @@ def watchlist(request):
             "heading": "Watchlist",
             "all_listings": watchlist_listings
         })
+    
+
+@login_required(login_url="auctions:login")
+def comment(request):
+
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            # Get data
+            comment = form.cleaned_data["comment"]
+            listing_id = int(request.POST["listing_id"])
+            listing = Listing.objects.get(id=int(listing_id))
+            
+            # Create new comment entry in database
+            new_comment = Comment(
+                user = User.objects.get(id=request.user.id),
+                listing = listing,
+                comment = comment
+            )
+            new_comment.save()
+
+            return redirect(f"/listing/{listing_id}")
+    else:
+        return redirect(index)
