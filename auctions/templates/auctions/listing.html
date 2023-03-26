@@ -32,15 +32,9 @@
             </form>
         </div>
     {% endif %}
-    {% if listing.url %}
-        <div>
-            <img src="{{ listing.image_url }}" onerror="this.onerror=null;this.src='https://www.survivorsuk.org/wp-content/uploads/2017/01/no-image.jpg';" width="400px" height="auto">
-        </div>
-    {% else %}
-        <div>
-            <img src="https://www.survivorsuk.org/wp-content/uploads/2017/01/no-image.jpg" width="400px" height="auto">
-        </div>
-    {% endif %}
+    <div>
+        <img src="{{ listing.image_url }}" onerror="this.onerror=null;this.src='https://www.survivorsuk.org/wp-content/uploads/2017/01/no-image.jpg';" width="400px" height="auto">
+    </div>
     <div>
         {{ listing.description }}
     </div>
