@@ -104,15 +104,25 @@ def listing(request, listing_id):
     current_listing = Listing.objects.get(id=int(listing_id))
     seller = User.objects.get(id=current_listing.user.id)
     comments = Comment.objects.filter(listing=current_listing.id).order_by("-time")
+    bids = Bid.objects.filter(listing=current_listing.id)
+
+    number_of_bids = len(bids)
+    if number_of_bids > 0:
+        highest_bid = bids.order_by("-amount")[0]
+        winner_id = highest_bid.user.id
+    else:
+        highest_bid = None
+        winner_id = None
 
     return render(request, "auctions/listing.html", {
         "listing": current_listing,
         "user_id": user_id,
         "in_watchlist": in_watchlist,
+        "number_of_bids": number_of_bids,
+        "winner_id": winner_id,
         "bid_form": BidForm,
         "comment_form": CommentForm,
         "seller": seller,
-        "category": current_listing.category,
         "comments": comments
     })
 
@@ -161,7 +171,6 @@ def bid(request):
         return redirect(index)
 
 
-# known bug: trying to type in a url path with a string in causes a value conversion error with the int funciton - Potentially use a Try Exception case to handle
 def categories(request, category_arg):
     all_categories = Category.objects.all().order_by("category_name")
 
