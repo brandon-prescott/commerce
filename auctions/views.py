@@ -10,7 +10,7 @@ from .forms import CreateListingForm, BidForm, CommentForm
 
 
 def index(request):
-    all_listings = Listing.objects.all().order_by("-time")
+    all_listings = Listing.objects.filter(is_active=True).order_by("-time")
     number_of_listings = len(all_listings)
     return render(request, "auctions/index.html", {
         "heading": "Active Listings",
@@ -190,7 +190,8 @@ def categories(request, category_arg):
             "code": "404"
         })
     
-    category_listings = Listing.objects.filter(category=int(category_arg))
+    filter = {"category": int(category_arg), "is_active": True}
+    category_listings = Listing.objects.filter(**filter)
     category_name = Category.objects.get(id=int(category_arg))
 
     number_of_listings = len(category_listings)
