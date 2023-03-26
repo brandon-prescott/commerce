@@ -34,7 +34,7 @@
         Current Price: ${{ listing.price }}
     </div>
     <div>
-        {% if user.is_authenticated and listing.is_active == True %}
+        {% if user.is_authenticated and listing.is_active == True and user_id != seller.id %}
             <form action="{% url 'bid' %}" method="POST">
                 {% csrf_token %}
                 <div class="form-group">
@@ -43,6 +43,13 @@
                 <button type="submit" class="btn btn-primary">Place Bid</button>
                 <input type="hidden" name="listing_id" value="{{ listing.id }}">
             </form>
+        {% elif user_id == seller.id and listing.is_active == True %}
+            <form action="{% url 'close' %}" method="POST">
+                {% csrf_token %} 
+                <button type="submit" class="btn btn-danger">Close Listing</button>
+                <input type="hidden" name="listing_id" value="{{ listing.id }}">
+            </form>
+        {% else %}
         {% endif %}
     </div>
     <div>
@@ -50,7 +57,7 @@
     </div>
     <div>
         <ul>
-            <li>Listed by: {{ seller_username }}</li>
+            <li>Listed by: {{ seller.username }}</li>
             <li>Category: {{ category }}</li>
         </ul>
     </div>

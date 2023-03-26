@@ -104,12 +104,14 @@ def listing(request, listing_id):
     current_listing = Listing.objects.get(id=int(listing_id))
     seller = User.objects.get(id=current_listing.user.id)
     comments = Comment.objects.filter(listing=current_listing.id).order_by("-time")
+
     return render(request, "auctions/listing.html", {
         "listing": current_listing,
+        "user_id": user_id,
         "in_watchlist": in_watchlist,
         "bid_form": BidForm,
         "comment_form": CommentForm,
-        "seller_username": seller.username,
+        "seller": seller,
         "category": current_listing.category,
         "comments": comments
     })
@@ -236,7 +238,7 @@ def comment(request):
             # Get data
             comment = form.cleaned_data["comment"]
             listing_id = int(request.POST["listing_id"])
-            listing = Listing.objects.get(id=int(listing_id))
+            listing = Listing.objects.get(id=listing_id)
             
             # Create new comment entry in database
             new_comment = Comment(
@@ -247,5 +249,20 @@ def comment(request):
             new_comment.save()
 
             return redirect(f"/listing/{listing_id}")
+    else:
+        return redirect(index)
+    
+
+@login_required(login_url="auctions:login")
+def close_listing(request):
+
+    if request.method == "POST":
+        # Update current listing to inactive in database
+        listing_id = int(request.POST["listing_id"])
+        listing = Listing.objects.get(id=listing_id)
+        listing.is_active = False
+        listing.save()
+        
+        return redirect(index)
     else:
         return redirect(index)
