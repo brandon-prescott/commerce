@@ -2,29 +2,33 @@
 
 {% block body %}
     <h2>{{ heading }}</h2>
-  
-    {% for listing in all_listings %}
-        {% if listing.is_active == True %}
-            <a href="{% url 'listing' listing_id=listing.id %}">
-                <div class="border rounded">
-                    <div>
-                        <img src="{{ listing.image_url }}" onerror="this.onerror=null;this.src='https://www.survivorsuk.org/wp-content/uploads/2017/01/no-image.jpg';" width="400px" height="auto">
+
+    {% if number_of_listings > 0 %}
+        {% for listing in all_listings %}
+            {% if listing.is_active == True %}
+                <a href="{% url 'listing' listing_id=listing.id %}">
+                    <div class="border rounded">
+                        <div>
+                            <img src="{{ listing.image_url }}" onerror="this.onerror=null;this.src='https://www.survivorsuk.org/wp-content/uploads/2017/01/no-image.jpg';" width="400px" height="auto">
+                        </div>
+                        <div>
+                            Title: {{ listing.title }}
+                        </div>
+                        <div>
+                            Current Price: ${{ listing.price }}
+                        </div>
+                        <div>
+                            Created: {{ listing.time }}
+                        </div>
+                        <div>
+                            Listing ID: {{ listing.id }} (DELETE WHEN FINISHED)
+                        </div>
                     </div>
-                    <div>
-                        Title: {{ listing.title }}
-                    </div>
-                    <div>
-                        Current Price: ${{ listing.price }}
-                    </div>
-                    <div>
-                        Created: {{ listing.time }}
-                    </div>
-                    <div>
-                        Listing ID: {{ listing.id }} (DELETE WHEN FINISHED)
-                    </div>
-                </div>
-            </a>
-        {% endif %}
-    {% endfor %}
+                </a>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        No listings
+    {% endif %}
     
 {% endblock %}

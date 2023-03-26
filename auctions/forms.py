@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import User, Category, Listing, Bid, Comment
+from .models import Listing, Bid, Comment
 
 
 class CreateListingForm(forms.ModelForm):

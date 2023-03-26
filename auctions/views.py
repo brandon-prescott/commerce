@@ -4,7 +4,6 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from django import forms
 
 from .models import User, Category, Listing, Bid, Watchlist, Comment
 from .forms import CreateListingForm, BidForm, CommentForm
@@ -12,9 +11,11 @@ from .forms import CreateListingForm, BidForm, CommentForm
 
 def index(request):
     all_listings = Listing.objects.all().order_by("-time")
+    number_of_listings = len(all_listings)
     return render(request, "auctions/index.html", {
         "heading": "Active Listings",
-        "all_listings": all_listings
+        "all_listings": all_listings,
+        "number_of_listings": number_of_listings
     })
 
 
@@ -191,9 +192,13 @@ def categories(request, category_arg):
     
     category_listings = Listing.objects.filter(category=int(category_arg))
     category_name = Category.objects.get(id=int(category_arg))
+
+    number_of_listings = len(category_listings)
+
     return render(request, "auctions/index.html", {
         "heading": f"Active Listings: {category_name}",
-        "all_listings": category_listings
+        "all_listings": category_listings,
+        "number_of_listings": number_of_listings
     })
 
 
@@ -232,9 +237,12 @@ def watchlist(request):
         for item in watchlist:
             watchlist_listings.append(item.listing)
 
+        number_of_listings = len(watchlist_listings)
+
         return render(request, "auctions/index.html", {
             "heading": "Watchlist",
-            "all_listings": watchlist_listings
+            "all_listings": watchlist_listings,
+            "number_of_listings": number_of_listings
         })
     
 
