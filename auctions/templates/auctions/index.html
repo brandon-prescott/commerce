@@ -4,12 +4,13 @@
     <h2>{{ heading }}</h2>
 
     {% if number_of_listings > 0 %}
-        {% for listing in all_listings %}
-            {% if listing.is_active == True %}
+    <div class="container-fluid">
+        <div class="row row-cols-auto">
+            {% for listing in all_listings %}
                 <a href="{% url 'listing' listing_id=listing.id %}">
-                    <div class="border rounded">
+                    <div class="col-sm">
                         <div>
-                            <img src="{{ listing.image_url }}" onerror="this.onerror=null;this.src='https://www.survivorsuk.org/wp-content/uploads/2017/01/no-image.jpg';" width="400px" height="auto">
+                            <img src="{{ listing.image_url }}" onerror="this.onerror=null;this.src='https://www.survivorsuk.org/wp-content/uploads/2017/01/no-image.jpg';" class="rounded" width="300px" height="300px">
                         </div>
                         <div>
                             Title: {{ listing.title }}
@@ -20,13 +21,11 @@
                         <div>
                             Created: {{ listing.time }}
                         </div>
-                        <div>
-                            Listing ID: {{ listing.id }} (DELETE WHEN FINISHED)
-                        </div>
                     </div>
-                </a>
-            {% endif %}
-        {% endfor %}
+                </a> 
+            {% endfor %} 
+        </div>
+    </div>   
     {% else %}
         No listings
     {% endif %}
