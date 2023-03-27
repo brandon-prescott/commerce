@@ -5,22 +5,26 @@
 
     {% if number_of_listings > 0 %}
     <div class="container-fluid">
-        <div class="row row-cols-auto">
+        <div class="row">
             {% for listing in all_listings %}
-                <a href="{% url 'listing' listing_id=listing.id %}">
-                    <div class="col-sm">
-                        <div>
-                            <img src="{{ listing.image_url }}" onerror="this.onerror=null;this.src='https://www.survivorsuk.org/wp-content/uploads/2017/01/no-image.jpg';" class="rounded" width="300px" height="300px">
+                <a href="{% url 'listing' listing_id=listing.id %}" class="nav-link">
+                    <div class="col-auto" style="border: 1px solid rgb(189, 189, 189); border-radius: 10px; padding: 20px;">
+                        <div style="display: flex; justify-content: center;">
+                            <div style="display: flex; width: 300px; height: 300px; align-items: center;">
+                                <img src="{{ listing.image_url }}" onerror="this.onerror=null;this.src='https://www.survivorsuk.org/wp-content/uploads/2017/01/no-image.jpg';" style="max-width: 100%; max-height: 100%; display: block; margin: auto;">
+                            </div>
                         </div>
-                        <div>
-                            Title: {{ listing.title }}
-                        </div>
-                        <div>
-                            Current Price: ${{ listing.price }}
-                        </div>
-                        <div>
-                            Created: {{ listing.time }}
-                        </div>
+                        <div style="margin-top: 20px; color: black;">
+                            <div style="color: black;">
+                                {{ listing.title }}
+                            </div>
+                            <div>
+                                <b>${{ listing.price }}</b>
+                            </div>
+                            <div style="color: grey;">
+                                {{ listing.time }}
+                            </div>
+                        </div>     
                     </div>
                 </a> 
             {% endfor %} 

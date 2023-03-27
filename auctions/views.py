@@ -82,7 +82,7 @@ def create_listing(request):
                 title = form.cleaned_data["title"],
                 description = form.cleaned_data["description"],
                 image_url = form.cleaned_data["image_url"],
-                price = form.cleaned_data["price"],
+                price = round(form.cleaned_data["price"], 2),
                 category = form.cleaned_data["category"]
             )
             new_listing.save()
@@ -133,7 +133,7 @@ def bid(request):
         form = BidForm(request.POST)
         if form.is_valid():
             # Get data
-            amount = form.cleaned_data["amount"]
+            amount = round(form.cleaned_data["amount"], 2)
             listing_id = int(request.POST["listing_id"])
             listing = Listing.objects.get(id=int(listing_id))
             current_price = listing.price

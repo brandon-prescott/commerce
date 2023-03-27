@@ -15,7 +15,7 @@ class Category(models.Model):
 class Listing(models.Model):
     title = models.CharField(max_length=50)
     description = models.CharField(max_length=1000)
-    price = models.FloatField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
     image_url = models.CharField(max_length=1500, blank=True)
     is_active = models.BooleanField(default=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="listing_user") # One user can be associated with many listings
@@ -28,7 +28,7 @@ class Listing(models.Model):
 class Bid(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="bid_user") # One user can be associated with many bids
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE, blank=True, null=True, related_name="bid_listing") # One listing can be associated with many bids
-    amount = models.FloatField()
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
     time = models.DateTimeField(auto_now_add=True) # Auto timestamp
 
     def __str__(self):
