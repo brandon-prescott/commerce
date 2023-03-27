@@ -17,7 +17,7 @@
     {% endif %}
 
     {% if user.is_authenticated and listing.is_active == True %}
-        <div>
+        <div style="padding-top: 5px; padding-bottom: 10px;">
             <form action="{% url 'watchlist' %}" method="POST">
                 {% csrf_token %}
                 <input type="hidden" name="listing_id" value="{{ listing.id }}">
@@ -32,25 +32,25 @@
             </form>
         </div>
     {% endif %}
-    <div>
+    <div style="padding-top: 5px; padding-bottom: 10px;">
         <img src="{{ listing.image_url }}" onerror="this.onerror=null;this.src='https://www.survivorsuk.org/wp-content/uploads/2017/01/no-image.jpg';" width="400px" height="auto">
     </div>
-    <div>
+    <div style="padding-top: 10px; padding-bottom: 10px;">
         {{ listing.description }}
     </div>
-    <div>
-        Current Price: ${{ listing.price }}
+    <div style="font-size: 32px;">
+        <b>${{ listing.price }}</b>
     </div>
-    <div>
+    <div style="color: grey;">
         {{ number_of_bids }} Bids
     </div>
-    <div>
+    <div style="padding-top: 10px; padding-bottom: 10px;">
         {% if user.is_authenticated and listing.is_active == True and user_id != seller.id %}
             <form action="{% url 'bid' %}" method="POST">
                 {% csrf_token %}
-                <div class="form-group">
+                <div class="form-group col-1" style="padding-left: 0px;">
                     {{ bid_form.amount }}
-                </div>  
+                </div>
                 <button type="submit" class="btn btn-primary">Place Bid</button>
                 <input type="hidden" name="listing_id" value="{{ listing.id }}">
             </form>
@@ -82,18 +82,27 @@
                 <div class="form-group">
                     {{ comment_form.comment }}
                 </div>  
-                <button type="submit" class="btn btn-secondary">Add Comment</button>
+                <button type="submit" class="btn btn-secondary">Comment</button>
                 <input type="hidden" name="listing_id" value="{{ listing.id }}">
             </form>
         {% endif %}
     </div>
     <hr>
     <div>
-        <ul>
-            {% for comment in comments %}
-                <li>{{ comment.user }}: {{ comment.comment }} ({{ comment.time }})</li>
-            {% endfor %}
-        </ul>
+        {% for comment in comments %}
+            <div>
+                <div>
+                    <b>{{ comment.user }}</b>
+                </div>
+                <div>
+                    {{ comment.comment }}
+                </div>
+                <div style="font-size: 12px; color: grey;">
+                    {{ comment.time }}
+                </div>
+            </div>
+            <hr>
+        {% endfor %}
     </div>
     
 {% endblock %}
