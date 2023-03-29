@@ -13,7 +13,7 @@ class Category(models.Model):
         return self.category_name
 
 class Listing(models.Model):
-    title = models.CharField(max_length=50)
+    title = models.CharField(max_length=55)
     description = models.CharField(max_length=1000)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     image_url = models.CharField(max_length=1500, blank=True)

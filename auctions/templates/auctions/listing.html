@@ -6,6 +6,10 @@
         <div class="alert alert-success" role="alert">
             You have now closed this listing
         </div>
+    {% elif listing.is_active == True and user_id == winner_id %}
+        <div class="alert alert-success" role="alert">
+            You are the current highest bidder
+        </div>
     {% elif listing.is_active == False and user_id == winner_id %}
         <div class="alert alert-success" role="alert">
             You have won this item
@@ -94,7 +98,7 @@
                 <div>
                     <b>{{ comment.user }}</b>
                 </div>
-                <div>
+                <div style="word-wrap: break-word">
                     {{ comment.comment }}
                 </div>
                 <div style="font-size: 12px; color: grey;">

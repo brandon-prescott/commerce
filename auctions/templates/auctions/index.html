@@ -7,7 +7,7 @@
     <div class="container-fluid">
         <div class="row">
             {% for listing in all_listings %}
-                <a href="{% url 'listing' listing_id=listing.id %}" class="nav-link">
+                <a href="{% url 'listing' listing_id=listing.id %}" style="margin:10px; text-decoration: none;">
                     <div class="col-auto" style="border: 1px solid rgb(189, 189, 189); border-radius: 10px; padding: 20px;">
                         <div style="display: flex; justify-content: center;">
                             <div style="display: flex; width: 300px; height: 300px; align-items: center;">
@@ -15,10 +15,10 @@
                             </div>
                         </div>
                         <div style="margin-top: 20px; color: black;">
-                            <div style="color: black;">
+                            <div style="color: black; height: 60px; max-width: 300px; word-wrap: break-word;">
                                 {{ listing.title }}
                             </div>
-                            <div>
+                            <div style="margin-top: 10px; font-size: 24px;">
                                 <b>${{ listing.price }}</b>
                             </div>
                             <div style="color: grey;">
