@@ -21,7 +21,7 @@
     {% endif %}
 
     {% if user.is_authenticated and listing.is_active == True %}
-        <div style="padding-top: 5px; padding-bottom: 10px;">
+        <div class="vertical-padding">
             <form action="{% url 'watchlist' %}" method="POST">
                 {% csrf_token %}
                 <input type="hidden" name="listing_id" value="{{ listing.id }}">
@@ -36,23 +36,23 @@
             </form>
         </div>
     {% endif %}
-    <div style="padding-top: 5px; padding-bottom: 10px;">
-        <img src="{{ listing.image_url }}" onerror="this.onerror=null;this.src='https://www.survivorsuk.org/wp-content/uploads/2017/01/no-image.jpg';" width="400px" height="auto">
+    <div class="vertical-padding">
+        <img src="{{ listing.image_url }}" onerror="this.onerror=null;this.src='https://www.survivorsuk.org/wp-content/uploads/2017/01/no-image.jpg';" class="listing-img">
     </div>
-    <div style="padding-top: 10px; padding-bottom: 10px;">
+    <div class="vertical-padding">
         {{ listing.description }}
     </div>
-    <div style="font-size: 32px;">
+    <div class="listing-price">
         <b>${{ listing.price }}</b>
     </div>
-    <div style="color: grey;">
+    <div class="bid-count">
         {{ number_of_bids }} Bids
     </div>
-    <div style="padding-top: 10px; padding-bottom: 10px;">
+    <div class="vertical-padding">
         {% if user.is_authenticated and listing.is_active == True and user_id != seller.id %}
             <form action="{% url 'bid' %}" method="POST">
                 {% csrf_token %}
-                <div class="form-group col-1" style="padding-left: 0px;">
+                <div class="form-group col-1 create-narrow">
                     {{ bid_form.amount }}
                 </div>
                 <button type="submit" class="btn btn-primary">Place Bid</button>
@@ -74,6 +74,7 @@
         <ul>
             <li>Listed by: {{ seller.username }}</li>
             <li>Category: {{ listing.category }}</li>
+            <li>Time posted: {{ listing.time }}</li>
         </ul>
     </div>
     <div>
@@ -98,10 +99,10 @@
                 <div>
                     <b>{{ comment.user }}</b>
                 </div>
-                <div style="word-wrap: break-word">
+                <div class="wrap-text">
                     {{ comment.comment }}
                 </div>
-                <div style="font-size: 12px; color: grey;">
+                <div class="comment-time">
                     {{ comment.time }}
                 </div>
             </div>

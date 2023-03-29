@@ -2,15 +2,83 @@ body {
     padding: 10px;
 }
 
+.create-narrow {
+    padding-left: 0px;
+}
+
+.listing-panel-link {
+    margin:10px;
+}
+
+.listing-panel {
+    border: 1px solid rgb(189, 189, 189);
+    border-radius: 10px;
+    padding: 20px;
+}
+
 .img-container {
-    width: 300px;
-    height: 300px;
-    border: 2px solid black;
+    display: flex;
+    justify-content: center;
 }
 
-.index-img {
+.img-container-2 {
+    display: flex;
     width: 300px;
     height: 300px;
+    align-items: center;
 }
 
+.home-img {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+    margin: auto;
+}
 
+.panel-summary {
+    margin-top: 20px;
+    color: black;
+}
+
+.panel-title {
+    color: black;
+    height: 60px;
+    max-width: 300px;
+    word-wrap: break-word;
+}
+
+.panel-price {
+    margin-top: 10px;
+    font-size: 24px;
+}
+
+.panel-time {
+    color: grey;
+}
+
+.vertical-padding {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.listing-img {
+    width: 400px;
+    height: auto;
+}
+
+.listing-price {
+    font-size: 32px;
+}
+
+.bid-count {
+    color: grey;
+}
+
+.wrap-text {
+    word-wrap: break-word
+}
+
+.comment-time {
+    font-size: 12px;
+    color: grey;
+}

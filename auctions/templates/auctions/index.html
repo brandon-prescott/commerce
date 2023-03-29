@@ -7,21 +7,21 @@
     <div class="container-fluid">
         <div class="row">
             {% for listing in all_listings %}
-                <a href="{% url 'listing' listing_id=listing.id %}" style="margin:10px; text-decoration: none;">
-                    <div class="col-auto" style="border: 1px solid rgb(189, 189, 189); border-radius: 10px; padding: 20px;">
-                        <div style="display: flex; justify-content: center;">
-                            <div style="display: flex; width: 300px; height: 300px; align-items: center;">
-                                <img src="{{ listing.image_url }}" onerror="this.onerror=null;this.src='https://www.survivorsuk.org/wp-content/uploads/2017/01/no-image.jpg';" style="max-width: 100%; max-height: 100%; display: block; margin: auto;">
+                <a href="{% url 'listing' listing_id=listing.id %}" class="listing-panel-link" style="text-decoration: none;">
+                    <div class="col-auto listing-panel">
+                        <div class="img-container">
+                            <div class="img-container-2">
+                                <img src="{{ listing.image_url }}" onerror="this.onerror=null;this.src='https://www.survivorsuk.org/wp-content/uploads/2017/01/no-image.jpg';" class="home-img">
                             </div>
                         </div>
-                        <div style="margin-top: 20px; color: black;">
-                            <div style="color: black; height: 60px; max-width: 300px; word-wrap: break-word;">
+                        <div class="panel-summary">
+                            <div class="panel-title">
                                 {{ listing.title }}
                             </div>
-                            <div style="margin-top: 10px; font-size: 24px;">
+                            <div class="panel-price">
                                 <b>${{ listing.price }}</b>
                             </div>
-                            <div style="color: grey;">
+                            <div class="panel-time">
                                 {{ listing.time }}
                             </div>
                         </div>     
