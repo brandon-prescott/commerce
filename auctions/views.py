@@ -97,16 +97,19 @@ def listing(request, listing_id):
     user_id = request.user.id
     filter = {"user": user_id, "listing": listing_id}
 
+    # Check if item is in watchlist
     if len(Watchlist.objects.filter(**filter)) == 1:
         in_watchlist = True
     else:
         in_watchlist = False
-    
+
+    # Get listing details    
     current_listing = Listing.objects.get(id=int(listing_id))
     seller = User.objects.get(id=current_listing.user.id)
     comments = Comment.objects.filter(listing=current_listing.id).order_by("-time")
     bids = Bid.objects.filter(listing=current_listing.id)
 
+    # Find highest bidder
     number_of_bids = len(bids)
     if number_of_bids > 0:
         highest_bid = bids.order_by("-amount")[0]
@@ -205,7 +208,6 @@ def categories(request, category_arg):
 
 @login_required(login_url="auctions:login")
 def watchlist(request):
-
     if request.method == "POST":
         listing_id = request.POST["listing_id"]
         watchlist_action = request.POST["watchlist_action"]
@@ -249,7 +251,6 @@ def watchlist(request):
 
 @login_required(login_url="auctions:login")
 def comment(request):
-
     if request.method == "POST":
         form = CommentForm(request.POST)
         if form.is_valid():
