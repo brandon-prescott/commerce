@@ -1,4 +1,4 @@
-# commerce
+# Commerce
 
 ## Installation
 To set up this project on your computer:
