@@ -6,7 +6,7 @@
         <div class="alert alert-success" role="alert">
             You have now closed this listing
         </div>
-    {% elif listing.is_active == True and user_id == winner_id %}
+    {% elif listing.is_active == True and user_id == winner_id and user.is_authenticated %}
         <div class="alert alert-success" role="alert">
             You are the current highest bidder
         </div>
