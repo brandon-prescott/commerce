@@ -22,3 +22,8 @@ To set up this project on your computer:
     ```
     python manage.py migrate
     ```
+   
+## Preview
+
+https://user-images.githubusercontent.com/108699186/230793113-114c2ead-c384-46af-a1bc-efe77f07c691.mp4
+
