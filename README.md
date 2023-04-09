@@ -6,15 +6,19 @@ To set up this project on your computer:
     ```
     git clone https://github.com/brandon-prescott/commerce.git
     ```
-2. Install all necessary dependencies
+2. Navigate to the commerce directory
+    ```
+    cd commerce
+    ```
+3. Install all necessary dependencies
     ```
     pip install -r requirements.txt
     ```
-3. Make migrations
+4. Make migrations
     ```
     python manage.py makemigrations
     ```
-4. Migrate
+5. Migrate
     ```
     python manage.py migrate
     ```
