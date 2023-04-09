@@ -24,3 +24,6 @@ To set up this project on your computer:
     ```
    
 ## Preview
+
+https://user-images.githubusercontent.com/108699186/230793557-63a55cb6-78c2-4d94-a121-c979c4b2572d.mp4
+
